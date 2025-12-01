@@ -1,10 +1,28 @@
 package player
 
+import (
+	"strconv"
+)
+
+const Reset string = "\033[0m"
+
+func PrintFunction(number int, p Player) string {
+	var stringStatement string
+	switch p.name {
+	case "L":
+		stringStatement = p.color + " -L-> " + Reset + strconv.Itoa(number)
+	case "R":
+		stringStatement = p.color + " -R-> " + Reset + strconv.Itoa(number)
+	}
+	return stringStatement
+}
+
 type Player struct {
 	name       string
 	option     int
 	playerWins []int
 	zone       [2]int
+	color      string
 }
 
 var lz = [2]int{0, 1}
@@ -16,12 +34,14 @@ func CreatePlayers(leftOption int, rightOption int) (Player, Player) {
 		option:     leftOption,
 		playerWins: make([]int, 0),
 		zone:       lz,
+		color:      "\033[34m",
 	}
 	var right = Player{
 		name:       "R",
 		option:     rightOption,
 		playerWins: make([]int, 0),
 		zone:       rz,
+		color:      "\033[31m",
 	}
 	return left, right
 
@@ -42,6 +62,9 @@ func rightZone(p Player, modulusNumber int) bool {
 func Dec(player Player, stack int) int {
 	var temp int = stack
 	temp = temp - player.option
+	if temp == 0 {
+		return temp
+	}
 	var possibleSub = player.option * 2
 	var modulusNumber = detZone(temp)
 	if leftZone(player, modulusNumber) {

@@ -1,6 +1,7 @@
 package player
 
 import (
+	"fmt"
 	"strconv"
 )
 
@@ -10,19 +11,18 @@ func PrintFunction(number int, p Player) string {
 	var stringStatement string
 	switch p.name {
 	case "L":
-		stringStatement = p.color + " -L-> " + Reset + strconv.Itoa(number)
+		stringStatement = Reset + p.color + " -L-> " + Reset + strconv.Itoa(number)
 	case "R":
-		stringStatement = p.color + " -R-> " + Reset + strconv.Itoa(number)
+		stringStatement = Reset + p.color + " -R-> " + Reset + strconv.Itoa(number)
 	}
 	return stringStatement
 }
 
 type Player struct {
-	name       string
-	option     int
-	playerWins []int
-	zone       [2]int
-	color      string
+	name   string
+	option int
+	zone   [2]int
+	color  string
 }
 
 var lz = [2]int{0, 1}
@@ -30,18 +30,16 @@ var rz = [2]int{3, 4}
 
 func CreatePlayers(leftOption int, rightOption int) (Player, Player) {
 	var left = Player{
-		name:       "L",
-		option:     leftOption,
-		playerWins: make([]int, 0),
-		zone:       lz,
-		color:      "\033[34m",
+		name:   "L",
+		option: leftOption,
+		zone:   lz,
+		color:  "\033[34m",
 	}
 	var right = Player{
-		name:       "R",
-		option:     rightOption,
-		playerWins: make([]int, 0),
-		zone:       rz,
-		color:      "\033[31m",
+		name:   "R",
+		option: rightOption,
+		zone:   rz,
+		color:  "\033[31m",
 	}
 	return left, right
 
@@ -75,4 +73,24 @@ func Dec(player Player, stack int) int {
 		stack = stack - player.option
 	}
 	return stack
+}
+
+func PlayAgain(l Player, r Player, counter int) (int, Player) {
+	var ogCounter = counter
+	for {
+		counter = Dec(l, counter)
+		if counter < 0 {
+			fmt.Println("\nRight Wins!")
+			return ogCounter, r
+		}
+		var lword string = PrintFunction(counter, l)
+		fmt.Printf("%s", lword)
+		counter = Dec(r, counter)
+		if counter < 0 {
+			fmt.Println("\nLeft Wins!")
+			return ogCounter, l
+		}
+		var rword string = PrintFunction(counter, r)
+		fmt.Printf("%s", rword)
+	}
 }

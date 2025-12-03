@@ -70,6 +70,8 @@ func Dec(player Player, stack int) int {
 }
 
 func PlayAgain(l Player, r Player, counter int) (int, Player) {
+	fmt.Printf("Left Options: %v\n", l.option)
+	fmt.Printf("Right Options: %v\n", r.option)
 	var ogCounter = counter
 	for {
 		counter = Dec(l, counter)

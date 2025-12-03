@@ -21,24 +21,18 @@ func PrintFunction(number int, p Player) string {
 type Player struct {
 	name   string
 	option int
-	zone   [2]int
 	color  string
 }
-
-var lz = [2]int{0, 1}
-var rz = [2]int{3, 4}
 
 func CreatePlayers(leftOption int, rightOption int) (Player, Player) {
 	var left = Player{
 		name:   "L",
 		option: leftOption,
-		zone:   lz,
 		color:  "\033[34m",
 	}
 	var right = Player{
 		name:   "R",
 		option: rightOption,
-		zone:   rz,
 		color:  "\033[31m",
 	}
 	return left, right

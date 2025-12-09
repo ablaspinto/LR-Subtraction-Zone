@@ -221,54 +221,6 @@ This happens because the zone multiplier creates a systematic advantage for Righ
 
 ---
 
-## Periodicity
-
-### The Discovery
-
-For any fixed L and R, the sequence of outcomes becomes **periodic** after some point.
-
-### Period Table (L, R ∈ {1..5})
-
-```
-       R=1   R=2   R=3   R=4   R=5
-  L=1    5     5     5     5    35
-  L=2    5     6     5     5    35  
-  L=3    5     5     6    10    40
-  L=4    5    10    25    40    50
-  L=5   35    35    40    50    30
-```
-
-### Why Periodicity Occurs
-
-Three cycles interact:
-
-1. **Zone Cycle** (period 5): LZ → LZ → Neutral → RZ → RZ → repeat
-2. **Left's Move Cycle** (related to L): Where Left lands mod L
-3. **Right's Move Cycle** (related to R): Where Right lands mod R
-
-The **doubling rule** creates cascading effects that make the actual period more complex than lcm(L, R, 5).
-
-### Example: L = 3, R = 5 (Period = 40)
-
-```
-n=1-10:   P P L L N L N P L R
-n=11-20:  R L R P L P P N N N  
-n=21-30:  N N P P P R P N R L
-n=31-40:  L R L N R N N P P P  ← End of period
-n=41-50:  P P N N N L N P L R  ← Pattern repeats
-```
-
-### Practical Use
-
-Once you know the period, predict any outcome:
-```
-outcome(n) = outcome((n - 1) mod Period + 1)
-
-Example: L=3, R=5, Period=40
-outcome(147) = outcome((147-1) mod 40 + 1) = outcome(27) = P
-```
-
----
 
 ## The Smaller Option Advantage
 

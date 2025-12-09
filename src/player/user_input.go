@@ -38,5 +38,7 @@ func GetAllNumbers() ([100]int, map[string][]Player) {
 			playerMoves["R"] = append(playerMoves["R"], right)
 		}
 	}
+	fmt.Printf("PLAYER MOVES %v \n", playerMoves["L"])
+	fmt.Printf("PLAYER MOVES RIGHT: %v \n", playerMoves["R"])
 	return intArr, playerMoves
 }

@@ -1,31 +1,36 @@
 package main
 
 import (
+	"LRZ/src/data_processing"
 	"LRZ/src/player"
 	"fmt"
+	"time"
 )
 
-var leftGoingFirst []map[int]player.Player
-var rightGoingFirst []map[int]player.Player
-
 func main() {
+	start := time.Now()
 	counters, allPlayerMoves := player.GetAllNumbers()
 	leftPlayerMoves := allPlayerMoves["L"]
 	rightPlayerMoves := allPlayerMoves["R"]
-	// crosss reference maps
-	for i := 0; i < len(counters); i++ {
-		currLeftMove := leftPlayerMoves[i]
-		currRightMove := rightPlayerMoves[i]
-		countNumber, lgfWinners := player.PlayAgain(currLeftMove, currRightMove, counters[i])
-		countNumber, rgfWinners := player.PlayAgain(currRightMove, currLeftMove, counters[i])
-		m1 := make(map[int]player.Player)
-		m2 := make(map[int]player.Player)
-		m1[countNumber] = lgfWinners
-		m2[countNumber] = rgfWinners
-		leftGoingFirst = append(leftGoingFirst, m1)
-		rightGoingFirst = append(rightGoingFirst, m2)
-	}
-	fmt.Printf("%v\n", rightGoingFirst)
-	fmt.Printf("%v\n", leftGoingFirst)
 
+	var allResults []dataprocessing.GameResult
+	for i := 0; i < len(leftPlayerMoves); i++ {
+		currLeft := leftPlayerMoves[i]
+		currRight := rightPlayerMoves[i]
+		for j := 0; j < len(counters); j++ {
+			counter := counters[j]
+			_, lgfWinner := player.PlayAgain(currLeft, currRight, counter)
+			_, rgfWinner := player.PlayAgain(currRight, currLeft, counter)
+			allResults = append(allResults, dataprocessing.GameResult{
+				Counter:         counter,
+				LeftOption:      currLeft.Option,
+				RightOption:     currRight.Option,
+				LeftGoingFirst:  lgfWinner,
+				RightGoingFirst: rgfWinner,
+			})
+		}
+	}
+	dataprocessing.ClassifyPositions(allResults)
+	duration := time.Since(start)
+	fmt.Printf("TOTAL DURATION OF PROGRAM %v\n", duration.Seconds())
 }
